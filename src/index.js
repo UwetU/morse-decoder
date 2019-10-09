@@ -37,8 +37,47 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    // write your solution here
+function decode(str) {
+  let stars = false;
+  let resultStr = '';
+  let newStr = '';
+  let arrStr = ['', '', '', '', ''];
+
+  while(str.length > 0){
+      newStr = '';
+      arrStr = ['', '', '', '', ''];
+
+      for(let i = 0; i < arrStr.length; i++){
+        //проверяем строку на содежрание *, если есть то записываем строку начиная с 10 элемента
+        if (str[0] == '*'){
+          stars = true;
+          str = str.slice(10);
+        }
+        //заполняем каждый элемент массива двумя элементами строки и удаляем эти элементы из строки
+        arrStr[i] += str[0] + str[1];
+        str = str.slice(2);
+        
+        //создаем строку в котрую кладем . и - вместо цифр
+        if (arrStr[i] == '10'){
+          arrStr[i] = '.';
+          newStr += arrStr[i];
+        } else if (arrStr[i] == '11'){
+          arrStr[i] = '-';
+          newStr += arrStr[i];
+        }
+      }
+
+      //устанавливаем пробел после конца слова
+      if (stars == true){
+        resultStr += ' ';
+        stars = false;
+      }
+      
+      //переводим . и - в буквы и записываем результат
+      resultStr += MORSE_TABLE[newStr];
+      
+  }
+  return resultStr;
 }
 
 module.exports = {
